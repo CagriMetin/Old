@@ -64,7 +64,7 @@ subroutine BlockMeshDic(x, y, z, file_name)
       grading_y = 1.0
 
 ! The patch names like inlet, outlet, walls
-      patch_name_top = 'moving wall'; patch_name_sides = 'fixedWalls'; patch_name_bf = 'frontAndBack'
+      patch_name_top = 'movingWall'; patch_name_sides = 'fixedWalls'; patch_name_bf = 'frontAndBack'
 
 
 ! The patch types like patch, wall, empty
@@ -74,90 +74,91 @@ subroutine BlockMeshDic(x, y, z, file_name)
 
  
       open(8, file='blockMeshDict', status='replace')
-      write(8,*) '/*--------------------------------*- C++ -*----------------------------------*\'
-      write(8,*) '| =========                 |                                                 |'
-      write(8,*) '| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |'
-      write(8,*) '|  \\    /   O peration     | Version:  2.2.0                                 |'
-      write(8,*) '|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |'
-      write(8,*) '|    \\/     M anipulation  |                                                 |'
-      write(8,*) '\*---------------------------------------------------------------------------*/'
-      write(8,*) 'FoamFile'
-      write(8,*) '{'
-      write(8,*) '    version     2.0;'
-      write(8,*) '    format      ascii;'
-      write(8,*) '    class       dictionary;'
-      write(8,*) '    object      blockMeshDict;'
-      write(8,*) '}'
-      write(8,*) '// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //'
-      write(8,*)
+      write(8, '(a)') '/*--------------------------------*- C++ -*----------------------------------*\'
+      write(8, '(a)') '| =========                 |                                                 |'
+      write(8, '(a)') '| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |'
+      write(8, '(a)') '|  \\    /   O peration     | Version:  2.2.0                                 |'
+      write(8, '(a)') '|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |'
+      write(8, '(a)') '|    \\/     M anipulation  |                                                 |'
+      write(8, '(a)') '\*---------------------------------------------------------------------------*/'
+      write(8, '(a)') 'FoamFile'
+      write(8, '(a)') '{'
+      write(8, '(a)') '    version     2.0;'
+      write(8, '(a)') '    format      ascii;'
+      write(8, '(a)') '    class       dictionary;'
+      write(8, '(a)') '    object      blockMeshDict;'
+      write(8, '(a)') '}'
+      write(8, '(a)') '// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //'
+      write(8, '(a)') ''
       write( str, '(f8.3)' ) convertToMeters          ! converting real to char
-      write(8,*) 'convertToMeters '//trim(str)//';'   ! concatenate two char
-      write(8,*) 
-      write(8,*) 'vertices'
-      write(8,*) '('
-      write(8, '( a, 3f8.3, a )' ) '    (', block_x_min / convertToMeters, block_y_min / convertToMeters, block_z_min, &
-                                        ') // point 0'
-      write(8, '( a, 3f8.3, a )' ) '    (', block_x_max / convertToMeters, block_y_min / convertToMeters, block_z_min, &
-                                        ') // point 1'
-      write(8, '( a, 3f8.3, a )' ) '    (', block_x_max / convertToMeters, block_y_max / convertToMeters, block_z_min, &
+      write(8, '(a)') 'convertToMeters '//trim(str)//';'   ! concatenate two char
+      write(8, '(a)') ''
+      write(8, '(a)') 'vertices'
+      write(8, '(a)') '('
+      write(8, '( a, 3f8.3, a )' ) '   (', block_x_min / convertToMeters, block_y_min / convertToMeters, block_z_min, &
+                                       ') // point 0'
+      write(8, '( a, 3f8.3, a )' ) '   (', block_x_max / convertToMeters, block_y_min / convertToMeters, block_z_min, &
+                                       ') // point 1'
+      write(8, '( a, 3f8.3, a )' ) '   (', block_x_max / convertToMeters, block_y_max / convertToMeters, block_z_min, &
                                        ') // point 2'
-      write(8, '( a, 3f8.3, a )' ) '    (', block_x_min / convertToMeters, block_y_max / convertToMeters, block_z_min, &
+      write(8, '( a, 3f8.3, a )' ) '   (', block_x_min / convertToMeters, block_y_max / convertToMeters, block_z_min, &
                                        ') // point 3'
-      write(8, '( a, 3f8.3, a )' ) '    (', block_x_min / convertToMeters, block_y_min / convertToMeters,&
-                                        &  block_z_max * convertToMeters, ') // point 4'
-      write(8, '( a, 3f8.3, a )' ) '    (', block_x_max / convertToMeters, block_y_min / convertToMeters,&
-                                        &  block_z_max * convertToMeters, ') // point 5'
-      write(8, '( a, 3f8.3, a )' ) '    (', block_x_max / convertToMeters, block_y_max / convertToMeters,&
-                                        &  block_z_max * convertToMeters, ') // point 6'
-      write(8, '( a, 3f8.3, a )' ) '    (', block_x_min / convertToMeters, block_y_max / convertToMeters,&
-                                        &  block_z_max * convertToMeters, ') // point 7'
-      write(8, *) ');'
-      write(8, *) 'blocks'
-      write(8, *) '('
+      write(8, '( a, 3f8.3, a )' ) '   (', block_x_min / convertToMeters, block_y_min / convertToMeters,&
+                                       &  block_z_max * convertToMeters, ') // point 4'
+      write(8, '( a, 3f8.3, a )' ) '   (', block_x_max / convertToMeters, block_y_min / convertToMeters,&
+                                       &  block_z_max * convertToMeters, ') // point 5'
+      write(8, '( a, 3f8.3, a )' ) '   (', block_x_max / convertToMeters, block_y_max / convertToMeters,&
+                                       &  block_z_max * convertToMeters, ') // point 6'
+      write(8, '( a, 3f8.3, a )' ) '   (', block_x_min / convertToMeters, block_y_max / convertToMeters,&
+                                       &  block_z_max * convertToMeters, ') // point 7'
+      write(8, '(a)') ');'
+      write(8, '(a)') ''
+      write(8, '(a)') 'blocks'
+      write(8, '(a)') '('
       write(8, '( a, 2i3, a, 2f8.3, a )') '    hex (0 1 2 3 4 5 6 7) (', mesh_x, mesh_y,&
                                        & ' 1) simpleGrading (', grading_x, grading_y, ' 1)'
 ! We assume that edges direction of blocks is similar in the USER GUIDE
 
-      write(8, *) ');'
-      write(8, *) 'edges'
-      write(8, *) '('
-      write(8, *) ');'
-      write(8, *)
-      write(8, *) 'boundary'
-      write(8, *) '('
-      write(8, *) '    ', patch_name_top
-      write(8, *) '    {'
-      write(8, *) '        type ', patch_type_top
-      write(8, *) '        faces'
-      write(8, *) '        ('
-      write(8, *) '            ', top 
-      write(8, *) '        );'
-      write(8, *) '     }'
-      write(8, *) '     ', patch_name_sides
-      write(8, *) '    {'
-      write(8, *) '        type ', patch_type_sides 
-      write(8, *) '        faces'
-      write(8, *) '         ('
-      write(8, *) '            ', bottom
-      write(8, *) '            ', left
-      write(8, *) '            ', right
-      write(8, *) '         );'
-      write(8, *) '     }'
-      write(8, *) '    ', patch_name_bf
-      write(8, *) '    {'
-      write(8, *) '        type ', patch_type_bf
-      write(8, *) '        faces'
-      write(8, *) '        ('
-      write(8, *) '            ', front
-      write(8, *) '            ', back
-      write(8, *) '        );'
-      write(8, *) '    }'
-      write(8, *) ');'
-      write(8, *)
-      write(8, *) 'mergePatchPairs'
-      write(8, *) '('
-      write(8, *) ');'
-      write(8, *) '// ************************************************************************* //'
+      write(8,  '(a)') ');'
+      write(8,  '(a)') 'edges'
+      write(8,  '(a)') '('
+      write(8,  '(a)') ');'
+      write(8,  '(a)')
+      write(8,  '(a)') 'boundary'
+      write(8,  '(a)') '('
+      write(8,  '(2a)') '   ', patch_name_top
+      write(8,  '(a)') '   {'
+      write(8,  '(3a)') '       type ', trim(patch_type_top), ';'
+      write(8,  '(a)') '       faces'
+      write(8,  '(a)') '       ('
+      write(8,  '(2a)') '           ', top 
+      write(8,  '(a)') '       );'
+      write(8,  '(a)') '    }'
+      write(8,  '(2a)') '    ', patch_name_sides
+      write(8,  '(a)') '    {'
+      write(8,  '(3a)') '       type ', trim(patch_type_sides), ';' 
+      write(8,  '(a)') '       faces'
+      write(8,  '(a)') '       ('
+      write(8,  '(2a)') '           ', bottom
+      write(8,  '(2a)') '           ', left
+      write(8,  '(2a)') '           ', right
+      write(8,  '(a)') '       );'
+      write(8,  '(a)') '     }'
+      write(8,  '(2a)') '    ', patch_name_bf
+      write(8,  '(a)') '   {'
+      write(8,  '(3a)') '       type ', trim(patch_type_bf), ';'
+      write(8,  '(a)') '       faces'
+      write(8,  '(a)') '       ('
+      write(8,  '(2a)') '            ', front
+      write(8,  '(2a)') '            ', back
+      write(8,  '(a)') '       );'
+      write(8,  '(a)') '    }'
+      write(8,  '(a)') ');'
+      write(8,  '(a)')
+      write(8,  '(a)') 'mergePatchPairs'
+      write(8,  '(a)') '('
+      write(8,  '(a)') ');'
+      write(8,  '(a)') '// ************************************************************************* //'
       close(8)
 
 end subroutine BlockMeshDic
